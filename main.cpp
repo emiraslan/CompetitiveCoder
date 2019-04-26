@@ -1,39 +1,38 @@
-#include <stdio.h>
-#include <limits.h>
-using namespace std;
+// A Dynamic Programming based solution for 0-1 Knapsack problem
+#include<stdio.h>
 
-int V;
+// A utility function that returns maximum of two integers
+int max(int a, int b) { return (a > b)? a : b; }
 
-int minDistance(int dist[], int sptSet[]){
-    int min = INT_MAX , min_index;
+// Returns the maximum value that can be put in a knapsack of capacity W
+int knapSack(int W, int wt[], int val[], int n)
+{
+   int i, w;
+   int K[n+1][W+1];
 
-    for(int v =0 ;v < V; v++){
-        if(dist[v] <= min && sptSet[v] == false ){
-            min = dist[v];
-            min_index = v;
-        }
-    }
+   // Build table K[][] in bottom up manner
+   for (i = 0; i <= n; i++)
+   {
+       for (w = 0; w <= W; w++)
+       {
+           if (i==0 || w==0)
+               K[i][w] = 0;
+           else if (wt[i-1] <= w)
+                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]);
+           else
+                 K[i][w] = K[i-1][w];
+       }
+   }
 
-    return min_index;
-
+   return K[n][W];
 }
 
-int main(){
-    V = 9;
-
-    int graph[V][V] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
-                      {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                      {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                      {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                      {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                      {0, 0, 4, 14, 10, 0, 2, 0, 0},
-                      {0, 0, 0, 0, 0, 2, 0, 1, 6},
-                      {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                      {0, 0, 2, 0, 0, 0, 6, 7, 0}
-                     };
-
-
-
-
+int main()
+{
+    int val[] = {60, 100, 120};
+    int wt[] = {10, 20, 30};
+    int  W = 50;
+    int n = sizeof(val)/sizeof(val[0]);
+    printf("%d", knapSack(W, wt, val, n));
     return 0;
 }
