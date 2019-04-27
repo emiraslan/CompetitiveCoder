@@ -32,7 +32,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="BFS.h" />
+		<Unit filename="DFS.h" />
+		<Unit filename="LCS.h" />
+		<Unit filename="LIS.h" />
+		<Unit filename="dijkstra.h" />
 		<Unit filename="draft.h" />
+		<Unit filename="knapsack.h" />
+		<Unit filename="kruskal.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
