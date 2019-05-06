@@ -36,6 +36,7 @@
 		<Unit filename="DFS.h" />
 		<Unit filename="LCS.h" />
 		<Unit filename="LIS.h" />
+		<Unit filename="OrderStatistics.h" />
 		<Unit filename="dijkstra.h" />
 		<Unit filename="draft.h" />
 		<Unit filename="knapsack.h" />

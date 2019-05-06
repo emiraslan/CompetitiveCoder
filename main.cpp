@@ -1,76 +1,75 @@
-// C++ implementation of randomized quickSelect
-#include<iostream>
-#include<climits>
-#include<cstdlib>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int randomPartition(int arr[], int l, int r);
-
-// This function returns k'th smallest element in arr[l..r] using
-// QuickSort based method. ASSUMPTION: ELEMENTS IN ARR[] ARE DISTINCT
-int kthSmallest(int arr[], int l, int r, int k)
+struct EventYear
 {
-    // If k is smaller than number of elements in array
-    if (k > 0 && k <= r - l + 1)
-    {
-        // Partition the array around a random element and
-        // get position of pivot element in sorted array
-        int pos = randomPartition(arr, l, r);
+    public:
+	char symbol;
+	int year;
+};
 
-        // If position is same as k
-        if (pos-l == k-1)
-            return arr[pos];
-        if (pos-l > k-1)  // If position is more, recur for left subarray
-            return kthSmallest(arr, l, pos-1, k);
+vector<EventYear> years;
 
-        // Else recur for right subarray
-        return kthSmallest(arr, pos+1, r, k-pos+l-1);
-    }
-
-    // If k is more than the number of elements in the array
-    return INT_MAX;
+bool compareEventYear(EventYear& eventYear1, EventYear& eventYear2) {
+	return eventYear1.year < eventYear2.year;
 }
 
-void swap(int *a, int *b)
-{
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-// Standard partition process of QuickSort().  It considers the last
-// element as pivot and moves all smaller element to left of it and
-// greater elements to right. This function is used by randomPartition()
-int partition(int arr[], int l, int r)
-{
-    int x = arr[r], i = l;
-    for (int j = l; j <= r - 1; j++)
-    {
-        if (arr[j] <= x)
-        {
-            swap(&arr[i], &arr[j]);
-            i++;
-        }
-    }
-    swap(&arr[i], &arr[r]);
-    return i;
-}
-
-// Picks a random pivot element between l and r and partitions
-// arr[l..r] around the randomly picked element using partition()
-int randomPartition(int arr[], int l, int r)
-{
-    int n = r-l+1;
-    int pivot = rand() % n;
-    swap(&arr[l + pivot], &arr[r]);
-    return partition(arr, l, r);
-}
-
-// Driver program to test above methods
 int main()
 {
-    int arr[] = {12, 3, 5, 7, 4, 19, 26};
-    int n = sizeof(arr)/sizeof(arr[0]), k = 3;
-    cout << "K'th smallest element is " << kthSmallest(arr, 0, n-1, k);
-    return 0;
+	int arr[][2] =
+	{
+		{
+			2000, 2010
+		},
+		{
+			1975, 2005
+		},
+		{
+			1975, 2003
+		},
+		{
+			1803, 1809
+		},
+		{
+			1750, 1869
+		},
+		{
+			1840, 1935
+		},
+		{
+			1803, 1921
+		},
+		{
+			1894, 1921
+		}
+	};
+
+	for (int i = 0; i < ((sizeof(arr) / 2) / sizeof(int)); i++) {
+		for (int j = 0; j < 2; j++) {
+			EventYear eventYear;
+			eventYear.symbol = (j == 0) ? '(' : ')';
+			eventYear.year = arr[i][j];
+			years.push_back(eventYear);
+		}
+	}
+
+	sort(years.begin(), years.end(), compareEventYear);
+
+	int maxAlivePeople = 0;
+	int currentAlivePeople = 0;
+	int maxAlivePeopleYear = 0;
+
+	for (int i = 0 ; i <  years.size(); i++)
+	{
+		currentAlivePeople += (years.at(i).symbol == '(') ? 1 : -1;
+		if (maxAlivePeople <= currentAlivePeople)
+		{
+			maxAlivePeople = currentAlivePeople;
+			maxAlivePeopleYear = years.at(i).year;
+		}
+	}
+
+	cout << "In " << maxAlivePeopleYear << ", number of alive people was at maximum: " << maxAlivePeople << " People.\n";
 }
